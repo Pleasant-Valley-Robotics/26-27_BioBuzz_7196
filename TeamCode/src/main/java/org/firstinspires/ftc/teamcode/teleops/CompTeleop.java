@@ -28,14 +28,14 @@
  */
 package org.firstinspires.ftc.teamcode.teleops;
 
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.IMU;
-
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.Robot;
 
 /*
  * This OpMode illustrates how to program your robot to drive field relative.  This means
@@ -53,50 +53,23 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
  */
 @TeleOp(name = "compTeleOp", group = "Robot")
 
-public class compTeleOp extends OpMode {
-    // This declares the four motors needed
-    DcMotor frontLeftDrive;
-    DcMotor frontRightDrive;
-    DcMotor backLeftDrive;
-    DcMotor backRightDrive;
-
-    // This declares the IMU needed to get the current direction the robot is facing
+public class CompTeleop extends OpMode {
+     Robot robot = new Robot(); //This imports the Robot class with all the Hardware Mapping
     IMU imu;
 
     @Override
     public void init() {
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
-        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
-
-        // We set the left motors in reverse which is needed for drive trains where the left
-        // motors are opposite to the right ones.
-        backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-
-        // This uses RUN_USING_ENCODER to be more accurate.   If you don't have the encoder
-        // wires, you should remove these
-        frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        imu = hardwareMap.get(IMU.class, "imu");
-        // This needs to be changed to match the orientation on your robot
-        //DO NOT FORGET THIS SHI OR YOU'RE SCREWED....
-        RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
-                RevHubOrientationOnRobot.LogoFacingDirection.UP;
-        RevHubOrientationOnRobot.UsbFacingDirection usbDirection =
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
-
-        RevHubOrientationOnRobot orientationOnRobot = new
-                RevHubOrientationOnRobot(logoDirection, usbDirection);
-        imu.initialize(new IMU.Parameters(orientationOnRobot));
+        // This imports the set-up function which defines all the motors and looks for their designated names
+        robot.setupRobot();
     }
 
     @Override
     public void loop() {
+//        robot.frontLeftDrive.setPower(1.0);
+//        robot.backLeftDrive.setPower(1.0);
+//        robot.frontRightDrive.setPower(1.0);
+//        robot.backRightDrive.setPower(1.0);
+
         //telemetry.addLine("Press A to reset Yaw");
         //telemetry.addLine("Hold left bumper to drive in robot relative");
         //telemetry.addLine("The left joystick sets the robot direction");
@@ -147,7 +120,7 @@ public class compTeleOp extends OpMode {
         double maxSpeed = 1.0;  // make this slower for outreaches
 
         // This is needed to make sure we don't pass > 1.0 to any wheel
-        // It allows us to keep all of the motors in proportion to what they should
+        // It allows us to keep all the motors in proportion to what they should
         // be and not get clipped
         maxPower = Math.max(maxPower, Math.abs(frontLeftPower));
         maxPower = Math.max(maxPower, Math.abs(frontRightPower));
@@ -157,9 +130,9 @@ public class compTeleOp extends OpMode {
         // We multiply by maxSpeed so that it can be set lower for outreaches
         // When a young child is driving the robot, we may not want to allow full
         // speed.
-        frontLeftDrive.setPower(maxSpeed * (frontLeftPower / maxPower));
-        frontRightDrive.setPower(maxSpeed * (frontRightPower / maxPower));
-        backLeftDrive.setPower(maxSpeed * (backLeftPower / maxPower));
-        backRightDrive.setPower(maxSpeed * (backRightPower / maxPower));
+        robot.frontLeftDrive.setPower(maxSpeed * (frontLeftPower / maxPower));
+        robot.frontRightDrive.setPower(maxSpeed * (frontRightPower / maxPower));
+        robot.backLeftDrive.setPower(maxSpeed * (backLeftPower / maxPower));
+        robot.backRightDrive.setPower(maxSpeed * (backRightPower / maxPower));
     }
 }
