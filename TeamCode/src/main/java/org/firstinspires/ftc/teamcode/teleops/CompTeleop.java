@@ -65,6 +65,7 @@ public class CompTeleop extends OpMode {
 
     @Override
     public void loop() {
+
 //        robot.frontLeftDrive.setPower(1.0);
 //        robot.backLeftDrive.setPower(1.0);
 //        robot.frontRightDrive.setPower(1.0);

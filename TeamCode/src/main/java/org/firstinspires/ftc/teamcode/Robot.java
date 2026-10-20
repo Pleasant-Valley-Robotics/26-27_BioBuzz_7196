@@ -40,7 +40,7 @@ public class Robot {
         backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
-                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT;
+                RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
         RevHubOrientationOnRobot.UsbFacingDirection usbDirection =
                 RevHubOrientationOnRobot.UsbFacingDirection.DOWN;
 
