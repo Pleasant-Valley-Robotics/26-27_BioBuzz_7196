@@ -30,6 +30,7 @@ package org.firstinspires.ftc.teamcode.teleops;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -55,12 +56,11 @@ import org.firstinspires.ftc.teamcode.Robot;
 
 public class CompTeleop extends OpMode {
      Robot robot = new Robot(); //This imports the Robot class with all the Hardware Mapping
-    IMU imu;
 
     @Override
     public void init() {
         // This imports the set-up function which defines all the motors and looks for their designated names
-        robot.setupRobot();
+        robot.setupRobot(hardwareMap);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class CompTeleop extends OpMode {
         // If you press the A button, then you reset the Yaw to be zero from the way
         // the robot is currently pointing
         if (gamepad1.a) {
-            imu.resetYaw();
+            robot.imu.resetYaw();
         }
         // If you press the left bumper, you get a drive from the point of view of the robot
         // (much like driving an RC vehicle)
@@ -98,7 +98,7 @@ public class CompTeleop extends OpMode {
 
         // Second, rotate angle by the angle the robot is pointing
         theta = AngleUnit.normalizeRadians(theta -
-                imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
+                robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
 
         // Third, convert back to cartesian
         double newForward = r * Math.sin(theta);
