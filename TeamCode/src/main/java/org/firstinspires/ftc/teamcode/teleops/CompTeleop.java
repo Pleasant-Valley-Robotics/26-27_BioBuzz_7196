@@ -30,6 +30,7 @@ package org.firstinspires.ftc.teamcode.teleops;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -56,7 +57,7 @@ import org.firstinspires.ftc.teamcode.Robot;
 
 public class CompTeleop extends OpMode {
      Robot robot = new Robot(); //This imports the Robot class with all the Hardware Mapping
-
+    
     @Override
     public void init() {
         // This imports the set-up function which defines all the motors and looks for their designated names
