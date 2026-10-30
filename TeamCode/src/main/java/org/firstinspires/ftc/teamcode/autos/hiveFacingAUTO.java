@@ -11,6 +11,9 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.teamcode.utility.RoadRunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.utility.Storage;
@@ -19,6 +22,12 @@ import org.firstinspires.ftc.teamcode.utility.Storage;
 @Autonomous(name = "practiceAuto", group = "Autonomous")
 public class hiveFacingAUTO extends LinearOpMode {
     int flipAuto = 1;
+    public DcMotorEx launcher = null;
+    public DcMotorEx intake = null;
+    public CRServo leftFeeder = null;
+    public CRServo rightFeeder = null;
+    public CRServo launcherFeeder = null;
+    public IMU imu;
     public static MecanumDrive drive;
     @Override
     public void runOpMode() {
@@ -43,9 +52,13 @@ public class hiveFacingAUTO extends LinearOpMode {
         Storage.autoRan = Storage.AutoRan.FACING_HIVE;
         Pose2d initialPose = new Pose2d(-55.135, 49.0834 * flipAuto, Math.toRadians(131.014) * flipAuto);
         drive = new MecanumDrive(hardwareMap, initialPose);
-        //Launcher launcher = new Launcher(hardwareMap);
-        //Intake intake = new Intake(hardwareMap);
-        //Camera camera = new Camera(hardwareMap);
+
+        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
+        intake = hardwareMap.get(DcMotorEx.class, "intake");
+
+        leftFeeder = hardwareMap.get(CRServo.class, "leftFeeder");
+        rightFeeder = hardwareMap.get(CRServo.class, "rightFeeder");
+        launcherFeeder = hardwareMap.get(CRServo.class, "launcherFeeder");
 
         Vector2d endingPosition = new Vector2d(-61.6131, 11.5718 * flipAuto);
 
