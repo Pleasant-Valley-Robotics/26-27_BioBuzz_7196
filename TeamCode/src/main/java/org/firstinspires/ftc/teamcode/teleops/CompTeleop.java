@@ -38,6 +38,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.utility.RoadRunner.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Robot;
 
 /*
  * This OpMode illustrates how to program your robot to drive field relative.  This means
@@ -55,64 +56,20 @@ import org.firstinspires.ftc.teamcode.utility.RoadRunner.MecanumDrive;
  */
 @TeleOp(name = "compTeleOp", group = "Robot")
 public class CompTeleop extends OpMode {
+    Robot robot = new Robot();
     private ElapsedTime runtime = new ElapsedTime();
 
-    public DcMotorEx frontLeftDrive = null;
-    public DcMotorEx frontRightDrive = null;
-    public DcMotorEx backLeftDrive = null;
-    public DcMotorEx backRightDrive = null;
-    public DcMotorEx launcher = null;
-    public DcMotorEx intake = null;
-
-    public CRServo leftFeeder = null;
-    public CRServo rightFeeder = null;
-    public CRServo launcherFeeder = null;
-    public IMU imu;
-
     //This is the desired velocity that we want to use
-    double targetVelocity = 0.6;
-
+    double targetVelocity = 0.63;
     public MecanumDrive mecanumDrive;
 
     @Override
     public void init() {
         // This imports the set-up function which defines all the motors and looks for their designated names
-        frontLeftDrive = hardwareMap.get(DcMotorEx.class, "frontLeftDrive");
-        frontRightDrive = hardwareMap.get(DcMotorEx.class, "frontRightDrive");
-        backLeftDrive = hardwareMap.get(DcMotorEx.class, "backLeftDrive");
-        backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
-
-        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
-        intake = hardwareMap.get(DcMotorEx.class, "intake");
-
-        leftFeeder = hardwareMap.get(CRServo.class, "leftFeeder");
-        rightFeeder = hardwareMap.get(CRServo.class, "rightFeeder");
-        launcherFeeder = hardwareMap.get(CRServo.class, "launcherFeeder");
-
-        backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-        leftFeeder.setDirection(CRServo.Direction.FORWARD);
-        rightFeeder.setDirection(CRServo.Direction.REVERSE);
-        launcherFeeder.setDirection(CRServo.Direction.REVERSE);
-
-        frontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.setupRobot(hardwareMap);
 
         waitForStart();
         runtime.reset();
-
     }
 
     private void waitForStart() {
@@ -130,28 +87,28 @@ public class CompTeleop extends OpMode {
         
         //Starts the launcher motor
         if (gamepad2.left_bumper){
-            launcher.setPower(targetVelocity);
+            robot.launcher.setPower(targetVelocity);
         }
         if (gamepad2.bWasPressed()){
-            launcher.setPower(0.0);
+            robot.launcher.setPower(0.0);
         }
         //Starts the launcher feeder to feed the pollen to the launcher wheel
         if(gamepad2.yWasPressed()) {
-            launcherFeeder.setPower(1.0);
+            robot.launcherFeeder.setPower(1.0);
         }
         if(gamepad2.aWasPressed()) {
-            launcherFeeder.setPower(0.0);
+            robot.launcherFeeder.setPower(0.0);
         }
         //Starts the intake system to take in the pollen
         if(gamepad2.leftTriggerWasPressed()) {
-            intake.setPower(1.0);
-            leftFeeder.setPower(1.0);
-            rightFeeder.setPower(1.0);
+            robot.intake.setPower(1.0);
+            robot.leftFeeder.setPower(1.0);
+            robot.rightFeeder.setPower(1.0);
         }
         if(gamepad2.leftTriggerWasReleased()) {
-            intake.setPower(0.0);
-            leftFeeder.setPower(0.0);
-            rightFeeder.setPower(0.0);
+            robot.intake.setPower(0.0);
+            robot.leftFeeder.setPower(0.0);
+            robot.rightFeeder.setPower(0.0);
         }
             double max = 0.0;
 
@@ -175,9 +132,9 @@ public class CompTeleop extends OpMode {
                 backRightPower /= max;
             }
 
-            frontLeftDrive.setPower(frontLeftPower);
-            backLeftDrive.setPower(backLeftPower);
-            frontRightDrive.setPower(frontRightPower);
-            backRightDrive.setPower(backRightPower);
+            robot.frontLeftDrive.setPower(frontLeftPower);
+            robot.backLeftDrive.setPower(backLeftPower);
+            robot.frontRightDrive.setPower(frontRightPower);
+            robot.backRightDrive.setPower(backRightPower);
         }
     }
