@@ -30,15 +30,10 @@ package org.firstinspires.ftc.teamcode.teleops;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.utility.RoadRunner.MecanumDrive;
-import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.utility.Robot;
 
 /*
  * This OpMode illustrates how to program your robot to drive field relative.  This means
@@ -60,7 +55,7 @@ public class CompTeleop extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     //This is the desired velocity that we want to use
-    double targetVelocity = 0.63;
+    double targetVelocity = 1200.0;
     public MecanumDrive mecanumDrive;
 
     @Override
@@ -79,7 +74,10 @@ public class CompTeleop extends OpMode {
     public void loop() {
 
         telemetry.addLine("Press A to reset Yaw");
-
+        telemetry.addLine("Gamepad 1: Chassis");
+        telemetry.addLine("Gamepad 2: Endefectors");
+        telemetry.addLine("G2: Right stick is intake - up = intake & down = outtake");
+        telemetry.addLine("G2: Left bumper starts the launcher & B stops it");
         //Sets up the drivetrain
         //if (gamepad1.left_bumper) {
           //  mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
@@ -87,11 +85,12 @@ public class CompTeleop extends OpMode {
         
         //Starts the launcher motor
         if (gamepad2.left_bumper){
-            robot.launcher.setPower(targetVelocity);
+            robot.launcher.setVelocity(targetVelocity);
         }
         if (gamepad2.bWasPressed()){
-            robot.launcher.setPower(0.0);
+            robot.launcher.setVelocity(0.0);
         }
+
         //Starts the launcher feeder to feed the pollen to the launcher wheel
         if(gamepad2.yWasPressed()) {
             robot.launcherFeeder.setPower(1.0);
@@ -99,17 +98,23 @@ public class CompTeleop extends OpMode {
         if(gamepad2.aWasPressed()) {
             robot.launcherFeeder.setPower(0.0);
         }
+
         //Starts the intake system to take in the pollen
-        if(gamepad2.leftTriggerWasPressed()) {
-            robot.intake.setPower(1.0);
-            robot.leftFeeder.setPower(1.0);
-            robot.rightFeeder.setPower(1.0);
-        }
-        if(gamepad2.leftTriggerWasReleased()) {
-            robot.intake.setPower(0.0);
-            robot.leftFeeder.setPower(0.0);
-            robot.rightFeeder.setPower(0.0);
-        }
+//        if(gamepad2.leftTriggerWasPressed()) {
+//            robot.intake.setPower(1.0);
+//            robot.leftFeeder.setPower(1.0);
+//            robot.rightFeeder.setPower(1.0);
+//        }
+//        if(gamepad2.leftTriggerWasReleased()) {
+//            robot.intake.setPower(0.0);
+//            robot.leftFeeder.setPower(0.0);
+//            robot.rightFeeder.setPower(0.0);
+//        }
+
+        robot.intake.setPower(-gamepad2.right_stick_y); // This gives the right stick on the second gamepad the power to intake and outtake
+        robot.leftFeeder.setPower(-gamepad2.right_stick_y);
+        robot.rightFeeder.setPower(-gamepad2.right_stick_y);
+            //Sets up the driving control on the controllers
             double max = 0.0;
 
             double axial   = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
