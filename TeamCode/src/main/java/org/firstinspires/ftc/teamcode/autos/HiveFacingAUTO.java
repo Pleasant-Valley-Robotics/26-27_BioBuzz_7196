@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.teamcode.utility.Storage.alliance;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -52,7 +53,7 @@ public class HiveFacingAUTO extends LinearOpMode {
         Storage.autoRan = Storage.AutoRan.FACING_HIVE;
 
         //Here the initial position is set for the AUTO
-        Pose2d initialPose = new Pose2d(64.0609, -10.452 * flipAuto, Math.toRadians(0.0) * flipAuto);
+        Pose2d initialPose = new Pose2d(64.0609 * flipAuto, -10.452 * flipAuto, Math.toRadians(0.0) * flipAuto);
         drive = new MecanumDrive(hardwareMap, initialPose);
         robot.setUpRobot(hardwareMap);
 
@@ -72,16 +73,16 @@ public class HiveFacingAUTO extends LinearOpMode {
         //Here is the sleep action/wait block to place inside the Actions.runBlocking(): new SleepAction(1.0)
 
         //Here we first start off by shooting our 4 pre-loaded pollen from our kit-bot
-  //      Actions.runBlocking(
-    //            new SequentialAction(
-                        //new Robot.shootBall() //The function from the endefector class is called
-      //          )
-        //);//The first cycle of shooting pollen is completed here
+        Actions.runBlocking(
+                new SequentialAction(
+                        new Robot.shootBall() //The function from the endefector class is called
+                )
+        );//The first cycle of shooting pollen is completed here
 
         //Intake position one is defined here using the x & y coordinates along with the heading of the robot (yaw)
-        Vector2d intakePosOne = new Vector2d(57.0735, -64.3447);
+        Vector2d intakePosOne = new Vector2d(57.0735 * flipAuto, -64.3447 * flipAuto);
         TrajectoryActionBuilder goToIntakeOne = drive.actionBuilder(initialPose)
-                .strafeToLinearHeading(intakePosOne, Math.toRadians(-1.4828))
+                .strafeToLinearHeading(intakePosOne, Math.toRadians(-1.4828) * flipAuto)
                 .waitSeconds(0.25);
 
         //The robot moves from its current position to the target coordinates
@@ -92,14 +93,16 @@ public class HiveFacingAUTO extends LinearOpMode {
             );//The robot finishes intaking its first set of pollen here
 
         //After intaking the pollen, the robot goes to the shoot position
-        Vector2d shootPosition = new Vector2d(0.0, 0.0 * flipAuto);
+        Vector2d shootPosition = new Vector2d(34.5803 * flipAuto, -64.5342 *flipAuto);
         TrajectoryActionBuilder goToShoot = drive.actionBuilder(drive.localizer.getPose())
-                .strafeToLinearHeading(shootPosition, Math.toRadians(0.0) * flipAuto)
+                .strafeToLinearHeading(shootPosition, Math.toRadians(-2.6855) * flipAuto)
                 .waitSeconds(0.1);
 
         Actions.runBlocking(
                 new SequentialAction(
-                        goToShoot.build()
+                        goToShoot.build(),
+                        new SleepAction(0.1),
+                        new Robot.shootBall()
                 )
         ); //Robot finishes its second cycle of shooting pollen
 

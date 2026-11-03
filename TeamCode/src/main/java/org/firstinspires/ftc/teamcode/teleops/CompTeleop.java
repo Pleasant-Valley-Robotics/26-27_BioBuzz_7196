@@ -30,6 +30,8 @@ package org.firstinspires.ftc.teamcode.teleops;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.utility.RoadRunner.MecanumDrive;
@@ -55,13 +57,14 @@ public class CompTeleop extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     //This is the desired velocity that we want to use
-    double targetVelocity = 1200.0;
+    double targetVelocity = 1325.0;
     public MecanumDrive mecanumDrive;
 
     @Override
     public void init() {
         // This imports the set-up function which defines all the motors and looks for their designated names
         robot.setupRobot(hardwareMap);
+        robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(315.0, 0.0, 0.0, 13.0));
 
         waitForStart();
         runtime.reset();
@@ -78,6 +81,7 @@ public class CompTeleop extends OpMode {
         telemetry.addLine("Gamepad 2: Endefectors");
         telemetry.addLine("G2: Right stick is intake - up = intake & down = outtake");
         telemetry.addLine("G2: Left bumper starts the launcher & B stops it");
+        telemetry.addData("Velocity", robot.launcher.getVelocity());
         //Sets up the drivetrain
         //if (gamepad1.left_bumper) {
           //  mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
@@ -92,28 +96,10 @@ public class CompTeleop extends OpMode {
         }
 
         //Starts the launcher feeder to feed the pollen to the launcher wheel
-        if(gamepad2.yWasPressed()) {
-            robot.launcherFeeder.setPower(1.0);
-        }
-        if(gamepad2.aWasPressed()) {
-            robot.launcherFeeder.setPower(0.0);
-        }
-
-        //Starts the intake system to take in the pollen
-//        if(gamepad2.leftTriggerWasPressed()) {
-//            robot.intake.setPower(1.0);
-//            robot.leftFeeder.setPower(1.0);
-//            robot.rightFeeder.setPower(1.0);
-//        }
-//        if(gamepad2.leftTriggerWasReleased()) {
-//            robot.intake.setPower(0.0);
-//            robot.leftFeeder.setPower(0.0);
-//            robot.rightFeeder.setPower(0.0);
-//        }
+        robot.launcherFeeder.setPower(gamepad2.left_stick_y);
 
         robot.intake.setPower(-gamepad2.right_stick_y); // This gives the right stick on the second gamepad the power to intake and outtake
-        robot.leftFeeder.setPower(-gamepad2.right_stick_y);
-        robot.rightFeeder.setPower(-gamepad2.right_stick_y);
+
             //Sets up the driving control on the controllers
             double max = 0.0;
 

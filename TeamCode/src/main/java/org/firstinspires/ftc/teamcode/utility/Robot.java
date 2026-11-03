@@ -5,29 +5,29 @@ import androidx.annotation.NonNull;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Robot {
-    public DcMotorEx frontLeftDrive = null;
-    public DcMotorEx frontRightDrive = null;
-    public DcMotorEx backLeftDrive = null;
-    public DcMotorEx backRightDrive = null;
-    public DcMotorEx launcher = null;
-    public DcMotorEx intake = null;
+    public static DcMotorEx frontLeftDrive = null;
+    public static DcMotorEx frontRightDrive = null;
+    public static DcMotorEx backLeftDrive = null;
+    public static DcMotorEx backRightDrive = null;
+    public static DcMotorEx launcher = null;
+    public static DcMotorEx intake = null;
 
-    public CRServo leftFeeder = null;
-    public CRServo rightFeeder = null;
-    public CRServo launcherFeeder = null;
+    public static CRServo leftFeeder = null;
+    public static CRServo rightFeeder = null;
+    public static CRServo launcherFeeder = null;
 
     public IMU imu;
-    public ElapsedTime runtime = new ElapsedTime();
-
-    double targetVelocity = 3400.0;
+    public static ElapsedTime runtime = new ElapsedTime();
 
     //The following is a hardware mapping function which can be imported to hardware map the robot
     public void setupRobot(HardwareMap hardwareMap) {
@@ -49,7 +49,7 @@ public class Robot {
         //This sets the direction of the motors to ensure they're moving in the correct direction
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-        leftFeeder.setDirection(CRServo.Direction.REVERSE);
+        leftFeeder.setDirection(CRServo.Direction.FORWARD);
         rightFeeder.setDirection(CRServo.Direction.REVERSE);
         launcherFeeder.setDirection(CRServo.Direction.REVERSE);
 
@@ -99,26 +99,66 @@ public class Robot {
             }
             double vel = launcher.getVelocity();
             packet.put("Launcher Velocity", vel);
-            if (vel > targetVelocity) {
+            if (vel > 1325.0) {
                 double tim = runtime.seconds();
                 packet.put("runtime", tim);
-                launcher.setVelocity(targetVelocity);
-                leftFeeder.setPower(1.0);
-                rightFeeder.setPower(1.0);
+                launcher.setVelocity(1325.0);
+                new SleepAction(3.0);
+                launcherFeeder.setPower(1.0);
                 startShooting = true;
 
             } else if (!startShooting) {
-                launcher.setVelocity(targetVelocity);
+                launcher.setVelocity(1325.0);
                 runtime.reset();
                 runtime.startTime();
             }
             if (runtime.seconds() > 0.50) {
-                leftFeeder.setPower(0.0);
-                rightFeeder.setPower(0.0);
+                launcherFeeder.setPower(0.0);
                 launcher.setVelocity(0.0);
                 return false;
             }
             return true;
         }
     }//End of the shooting function
+    public static class intakeBall implements Action {
+        public boolean initialized = false;
+        public boolean startIntaking = false;
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            if (!initialized) {
+                initialized = true;
+                startIntaking = false;
+                intake.setPower(0.0);
+                leftFeeder.setPower(0.0);
+                rightFeeder.setPower(0.0);
+                runtime.reset();
+                runtime.startTime();
+            }
+            double vel = launcher.getVelocity();
+            packet.put("Intake Speed", vel);
+            if (vel > 1325.0) {
+                double tim = runtime.seconds();
+                packet.put("runtime", tim);
+                leftFeeder.setPower(1.0);
+                rightFeeder.setPower(1.0);
+                intake.setPower(1.0);
+                startIntaking = true;
+
+            } else if (!startIntaking) {
+                leftFeeder.setPower(1.0);
+                rightFeeder.setPower(1.0);
+                intake.setPower(1.0);
+                runtime.reset();
+                runtime.startTime();
+            }
+            if (runtime.seconds() > 0.50) {
+                leftFeeder.setPower(0.0);
+                rightFeeder.setPower(0.0);
+                intake.setPower(0.0);
+                return false;
+            }
+            return true;
+        }
+    }//End of the intaking function
 }
