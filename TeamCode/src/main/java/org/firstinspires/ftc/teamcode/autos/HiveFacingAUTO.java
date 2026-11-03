@@ -53,7 +53,7 @@ public class HiveFacingAUTO extends LinearOpMode {
         Storage.autoRan = Storage.AutoRan.FACING_HIVE;
 
         //Here the initial position is set for the AUTO
-        Pose2d initialPose = new Pose2d(64.0609 * flipAuto, -10.452 * flipAuto, Math.toRadians(0.0) * flipAuto);
+        Pose2d initialPose = new Pose2d(62.6454 * flipAuto, -9.7231 * flipAuto, Math.toRadians(-0.3999) * flipAuto);
         drive = new MecanumDrive(hardwareMap, initialPose);
         robot.setUpRobot(hardwareMap);
 
@@ -80,9 +80,9 @@ public class HiveFacingAUTO extends LinearOpMode {
         );//The first cycle of shooting pollen is completed here
 
         //Intake position one is defined here using the x & y coordinates along with the heading of the robot (yaw)
-        Vector2d intakePosOne = new Vector2d(57.0735 * flipAuto, -64.3447 * flipAuto);
+        Vector2d intakePosOne = new Vector2d(34.5803 * flipAuto, -64.5342 * flipAuto);
         TrajectoryActionBuilder goToIntakeOne = drive.actionBuilder(initialPose)
-                .strafeToLinearHeading(intakePosOne, Math.toRadians(-1.4828) * flipAuto)
+                .strafeToLinearHeading(intakePosOne, Math.toRadians(-1.671) * flipAuto)
                 .waitSeconds(0.25);
 
         //The robot moves from its current position to the target coordinates
@@ -93,9 +93,9 @@ public class HiveFacingAUTO extends LinearOpMode {
             );//The robot finishes intaking its first set of pollen here
 
         //After intaking the pollen, the robot goes to the shoot position
-        Vector2d shootPosition = new Vector2d(34.5803 * flipAuto, -64.5342 *flipAuto);
+        Vector2d shootPosition = new Vector2d(62.4582 * flipAuto, -14.497 * flipAuto);
         TrajectoryActionBuilder goToShoot = drive.actionBuilder(drive.localizer.getPose())
-                .strafeToLinearHeading(shootPosition, Math.toRadians(-2.6855) * flipAuto)
+                .strafeToLinearHeading(shootPosition, Math.toRadians(-0.6157) * flipAuto)
                 .waitSeconds(0.1);
 
         Actions.runBlocking(

@@ -64,7 +64,7 @@ public class CompTeleop extends OpMode {
     public void init() {
         // This imports the set-up function which defines all the motors and looks for their designated names
         robot.setupRobot(hardwareMap);
-        robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(315.0, 0.0, 0.0, 13.0));
+        robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(200.0, 0.0, 0.0, 13.0));
 
         waitForStart();
         runtime.reset();

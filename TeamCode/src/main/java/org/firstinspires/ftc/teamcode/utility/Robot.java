@@ -15,16 +15,16 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Robot {
-    public static DcMotorEx frontLeftDrive = null;
-    public static DcMotorEx frontRightDrive = null;
-    public static DcMotorEx backLeftDrive = null;
-    public static DcMotorEx backRightDrive = null;
-    public static DcMotorEx launcher = null;
-    public static DcMotorEx intake = null;
+    public static DcMotorEx frontLeftDrive;
+    public static DcMotorEx frontRightDrive;
+    public static DcMotorEx backLeftDrive;
+    public static DcMotorEx backRightDrive;
+    public static DcMotorEx launcher;
+    public static DcMotorEx intake;
 
-    public static CRServo leftFeeder = null;
-    public static CRServo rightFeeder = null;
-    public static CRServo launcherFeeder = null;
+    public static CRServo leftFeeder;
+    public static CRServo rightFeeder;
+    public static CRServo launcherFeeder;
 
     public IMU imu;
     public static ElapsedTime runtime = new ElapsedTime();
@@ -92,8 +92,7 @@ public class Robot {
                 initialized = true;
                 startShooting = false;
                 launcher.setVelocity(0.0);
-                leftFeeder.setPower(0.0);
-                rightFeeder.setPower(0.0);
+                launcherFeeder.setPower(0.0);
                 runtime.reset();
                 runtime.startTime();
             }
