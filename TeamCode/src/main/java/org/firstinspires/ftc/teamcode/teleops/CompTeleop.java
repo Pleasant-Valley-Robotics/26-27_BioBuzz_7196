@@ -58,13 +58,14 @@ public class CompTeleop extends OpMode {
 
     //This is the desired velocity that we want to use
     double targetVelocity = 1325.0;
-    public MecanumDrive mecanumDrive;
+    double maxFeederSpeed = 0.7;
+//    public MecanumDrive mecanumDrive;
 
     @Override
     public void init() {
         // This imports the set-up function which defines all the motors and looks for their designated names
-        robot.setupRobot(hardwareMap);
-        robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(200.0, 0.0, 0.0, 13.0));
+        robot.setUpRobot(hardwareMap);
+        robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(250.0, 0.0, 0.0, 13.0));
 
         waitForStart();
         runtime.reset();
@@ -96,9 +97,11 @@ public class CompTeleop extends OpMode {
         }
 
         //Starts the launcher feeder to feed the pollen to the launcher wheel
-        robot.launcherFeeder.setPower(gamepad2.left_stick_y);
+        robot.launcherFeeder.setPower(gamepad2.left_stick_y * maxFeederSpeed); // Gives the power
 
         robot.intake.setPower(-gamepad2.right_stick_y); // This gives the right stick on the second gamepad the power to intake and outtake
+        robot.rightFeeder.setPower(-gamepad2.right_stick_y);
+        robot.leftFeeder.setPower(-gamepad2.right_stick_y);
 
             //Sets up the driving control on the controllers
             double max = 0.0;

@@ -30,7 +30,7 @@ public class Robot {
     public static ElapsedTime runtime = new ElapsedTime();
 
     //The following is a hardware mapping function which can be imported to hardware map the robot
-    public void setupRobot(HardwareMap hardwareMap) {
+    public void setUpRobot(HardwareMap hardwareMap) {
         //Main drivetrain motors hardware mapping
         frontLeftDrive = hardwareMap.get(DcMotorEx.class, "frontLeftDrive");
         frontRightDrive = hardwareMap.get(DcMotorEx.class, "frontRightDrive");
@@ -79,9 +79,6 @@ public class Robot {
 //        imu.initialize(new IMU.Parameters(orientationOnRobot));
     }
 
-    public void setUpRobot(HardwareMap hardwareMap) {
-    }
-
     public static class shootBall implements Action {
         public boolean initialized = false;
         public boolean startShooting = false;
@@ -98,20 +95,20 @@ public class Robot {
             }
             double vel = launcher.getVelocity();
             packet.put("Launcher Velocity", vel);
-            if (vel > 1325.0) {
+            if (vel > 1375.0) {
                 double tim = runtime.seconds();
                 packet.put("runtime", tim);
-                launcher.setVelocity(1325.0);
-                new SleepAction(3.0);
+                launcher.setVelocity(1375.0);
+                new SleepAction(0.5);
                 launcherFeeder.setPower(1.0);
                 startShooting = true;
 
             } else if (!startShooting) {
-                launcher.setVelocity(1325.0);
+                launcher.setVelocity(1375.0);
                 runtime.reset();
                 runtime.startTime();
             }
-            if (runtime.seconds() > 0.50) {
+            if (runtime.seconds() > 1.0) {
                 launcherFeeder.setPower(0.0);
                 launcher.setVelocity(0.0);
                 return false;
@@ -119,45 +116,15 @@ public class Robot {
             return true;
         }
     }//End of the shooting function
+
     public static class intakeBall implements Action {
-        public boolean initialized = false;
-        public boolean startIntaking = false;
 
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            if (!initialized) {
-                initialized = true;
-                startIntaking = false;
-                intake.setPower(0.0);
-                leftFeeder.setPower(0.0);
-                rightFeeder.setPower(0.0);
-                runtime.reset();
-                runtime.startTime();
-            }
-            double vel = launcher.getVelocity();
-            packet.put("Intake Speed", vel);
-            if (vel > 1325.0) {
-                double tim = runtime.seconds();
-                packet.put("runtime", tim);
-                leftFeeder.setPower(1.0);
-                rightFeeder.setPower(1.0);
-                intake.setPower(1.0);
-                startIntaking = true;
-
-            } else if (!startIntaking) {
-                leftFeeder.setPower(1.0);
-                rightFeeder.setPower(1.0);
-                intake.setPower(1.0);
-                runtime.reset();
-                runtime.startTime();
-            }
-            if (runtime.seconds() > 0.50) {
-                leftFeeder.setPower(0.0);
-                rightFeeder.setPower(0.0);
-                intake.setPower(0.0);
-                return false;
-            }
+            intake.setPower(1.0);
+            leftFeeder.setPower(1.0);
+            rightFeeder.setPower(1.0);
             return true;
-        }
-    }//End of the intaking function
+        }//End of the intaking function
+    }
 }
