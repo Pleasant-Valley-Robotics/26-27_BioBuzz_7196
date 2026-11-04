@@ -15,13 +15,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.utility.RoadRunner.MecanumDrive;
-import org.firstinspires.ftc.teamcode.utility.Storage;
 import org.firstinspires.ftc.teamcode.utility.Robot;
+import org.firstinspires.ftc.teamcode.utility.Storage;
 
 @Config
-@Autonomous(name = "hiveFacingAUTO", group = "Autonomous")
-public class HiveFacingAUTO extends LinearOpMode {
-    double flipAuto = 1; //This variable allows us to invert coordinates in order to change alliancev77
+@Autonomous(name = "RedHiveFacingAUTO", group = "Autonomous")
+public class RedHiveFacingAUTO extends LinearOpMode {
     Robot robot = new Robot();
     public static MecanumDrive drive;
 
@@ -32,23 +31,14 @@ public class HiveFacingAUTO extends LinearOpMode {
             //add anything for during initialization
             //telemetry.addData("Shots To Cycle", camera.findShotsToCycle());
             //Here, we pick the alliance that we're on, and this automatically does the math to invert the coordinates per the alliance
-            if (gamepad1.x) {
-                flipAuto = 1.0;
-                alliance = Storage.Alliance.BLUE;
-            } else if (gamepad1.b) {
-                flipAuto = -1.0;
-                alliance = Storage.Alliance.RED;
-            }
             //The telemetry here tells the user which button to press for the designated alliance
             telemetry.update();
-            telemetry.addData("Press X","for BLUE");
-            telemetry.addData("Press B","for RED");
-            telemetry.addData("Selected Alliance", alliance);
+            telemetry.addLine("RED ALLIANCE");
         }
         Storage.autoRan = Storage.AutoRan.FACING_HIVE;
 
         //Here the initial position is set for the AUTO
-        Pose2d initialPose = new Pose2d(62.6454 * flipAuto, -9.7231 * flipAuto, Math.toRadians(-0.3999) * flipAuto);
+        Pose2d initialPose = new Pose2d(-49.3885, 3.6707, Math.toRadians(-178.9458));
         drive = new MecanumDrive(hardwareMap, initialPose);
         robot.setUpRobot(hardwareMap);
 
@@ -67,9 +57,9 @@ public class HiveFacingAUTO extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        Vector2d shootPositionStart = new Vector2d(62.4582 * flipAuto, -14.497);
+        Vector2d shootPositionStart = new Vector2d( -49.5093, 6.2717);
         TrajectoryActionBuilder goToShootStart = drive.actionBuilder(drive.localizer.getPose())
-                .strafeToLinearHeading(shootPositionStart, Math.toRadians(-0.6157) * flipAuto)
+                .strafeToLinearHeading(shootPositionStart, Math.toRadians(-179.7521))
                 .waitSeconds(0.1);
 
         Actions.runBlocking(
@@ -92,16 +82,16 @@ public class HiveFacingAUTO extends LinearOpMode {
         //Here we first start off by shooting our 4 pre-loaded pollen from our kit-bot
 
         //Intake position one is defined here using the x & y coordinates along with the heading of the robot (yaw)
-        Vector2d intakePosOne = new Vector2d(67.7271 * flipAuto, -47.9442);
+        Vector2d intakePosOne = new Vector2d(-49.9468, 41.1602);
         TrajectoryActionBuilder goToIntakeOne = drive.actionBuilder(initialPose)
-                .strafeToLinearHeading(intakePosOne, Math.toRadians(-61.702) * flipAuto)
+                .strafeToLinearHeading(intakePosOne, Math.toRadians(143.407))
                 .waitSeconds(0.25);
 
-        Vector2d intakePosOneClose = new Vector2d(65.0403 * flipAuto, -58.973);
-        TrajectoryActionBuilder goToIntakeOneClose = drive.actionBuilder(initialPose)
-                .strafeToLinearHeading(intakePosOneClose, Math.toRadians(-61.702) * flipAuto)
+        Vector2d intakePosOneClose = new Vector2d(-58.4471, 53.6043);
+        TrajectoryActionBuilder goToIntakeOneClose = goToIntakeOne.endTrajectory().fresh()
+                .strafeToLinearHeading(intakePosOneClose, Math.toRadians(96.4867))
                 .waitSeconds(0.25);
-// -48.4889
+
         //The robot moves from its current position to the target coordinates
             Actions.runBlocking(
                     new SequentialAction(
@@ -131,9 +121,9 @@ public class HiveFacingAUTO extends LinearOpMode {
                 )
         ); //Robot finishes its second cycle of shooting pollen
 
-        Vector2d parkPose = new Vector2d(-28.9042 * flipAuto, -64.6785);
+        Vector2d parkPose = new Vector2d(33.0409, 54.4091);
         TrajectoryActionBuilder goToParkPose = drive.actionBuilder(initialPose)
-                .strafeToLinearHeading(parkPose, Math.toRadians(-0.78) * flipAuto)
+                .strafeToLinearHeading(parkPose, Math.toRadians(91.1721))
                 .waitSeconds(0.25);
 
         Actions.runBlocking(
