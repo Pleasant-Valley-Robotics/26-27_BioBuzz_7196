@@ -57,15 +57,15 @@ public class CompTeleop extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     //This is the desired velocity that we want to use
-    double targetVelocity = 1325.0;
-    double maxFeederSpeed = 0.7;
+    double targetVelocity = 1475.0;
+    double maxFeederSpeed = 0.2;
 //    public MecanumDrive mecanumDrive;
 
     @Override
     public void init() {
         // This imports the set-up function which defines all the motors and looks for their designated names
         robot.setUpRobot(hardwareMap);
-        robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(250.0, 0.0, 0.0, 13.0));
+        robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(390.0, 0.0, 0.0, 15.0));
 
         waitForStart();
         runtime.reset();
@@ -83,6 +83,8 @@ public class CompTeleop extends OpMode {
         telemetry.addLine("G2: Right stick is intake - up = intake & down = outtake");
         telemetry.addLine("G2: Left bumper starts the launcher & B stops it");
         telemetry.addData("Velocity", robot.launcher.getVelocity());
+        telemetry.addData("Velocity Error", 1475.0 - robot.launcher.getVelocity());
+        telemetry.update();
         //Sets up the drivetrain
         //if (gamepad1.left_bumper) {
           //  mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
@@ -94,6 +96,13 @@ public class CompTeleop extends OpMode {
         }
         if (gamepad2.bWasPressed()){
             robot.launcher.setVelocity(0.0);
+        }
+
+        if (gamepad2.dpad_up){
+            robot.launcher.setVelocity(targetVelocity + 10.0);
+        }
+        if (gamepad2.dpad_down){
+            robot.launcher.setVelocity(targetVelocity - 5.0);
         }
 
         //Starts the launcher feeder to feed the pollen to the launcher wheel
