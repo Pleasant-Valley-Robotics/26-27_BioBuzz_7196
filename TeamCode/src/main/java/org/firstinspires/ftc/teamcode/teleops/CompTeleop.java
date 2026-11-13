@@ -57,7 +57,7 @@ public class CompTeleop extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     //This is the desired velocity that we want to use
-    double targetVelocity = 1475.0;
+    double targetVelocity = 1200.0;
     double maxFeederSpeed = 0.2;
 //    public MecanumDrive mecanumDrive;
 
@@ -65,7 +65,7 @@ public class CompTeleop extends OpMode {
     public void init() {
         // This imports the set-up function which defines all the motors and looks for their designated names
         robot.setUpRobot(hardwareMap);
-        robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(390.0, 0.0, 0.0, 15.0));
+        robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(125.0, 0.0, 1.0, 15.0));
 
         waitForStart();
         runtime.reset();
@@ -83,7 +83,7 @@ public class CompTeleop extends OpMode {
         telemetry.addLine("G2: Right stick is intake - up = intake & down = outtake");
         telemetry.addLine("G2: Left bumper starts the launcher & B stops it");
         telemetry.addData("Velocity", robot.launcher.getVelocity());
-        telemetry.addData("Velocity Error", 1475.0 - robot.launcher.getVelocity());
+        telemetry.addData("Velocity Error", 1250.0 - robot.launcher.getVelocity());
         telemetry.update();
         //Sets up the drivetrain
         //if (gamepad1.left_bumper) {

@@ -40,8 +40,7 @@ public class BlueParkAUTO extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, initialPose);
         robot.setUpRobot(hardwareMap);
 
-        robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(390.0, 0.0, 0.0, 15.0));
-
+        robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(125.0, 0.0, 1.0, 15.0));
         //Here is all the hardware mapping for the motors and servos defined above
 //        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
 //        intake = hardwareMap.get(DcMotorEx.class, "intake");

@@ -95,16 +95,16 @@ public class Robot {
             }
             double vel = launcher.getVelocity();
             packet.put("Launcher Velocity", vel);
-            if (vel > 1375.0) {
+            if (vel > 1200.0) {
                 double tim = runtime.seconds();
                 packet.put("runtime", tim);
-                launcher.setVelocity(1375.0);
+                launcher.setVelocity(1200.0);
                 new SleepAction(0.5);
                 launcherFeeder.setPower(1.0);
                 startShooting = true;
 
             } else if (!startShooting) {
-                launcher.setVelocity(1375.0);
+                launcher.setVelocity(1200.0);
                 runtime.reset();
                 runtime.startTime();
             }

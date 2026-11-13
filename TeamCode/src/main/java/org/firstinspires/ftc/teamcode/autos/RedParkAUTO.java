@@ -40,7 +40,7 @@ public class RedParkAUTO extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, initialPose);
         robot.setUpRobot(hardwareMap);
 
-        robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(390.0, 0.0, 0.0, 15.0));
+        robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(125.0, 0.0, 1.0, 15.0));
 
         //Here is all the hardware mapping for the motors and servos defined above
 //        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
@@ -54,7 +54,7 @@ public class RedParkAUTO extends LinearOpMode {
         waitForStart();
 
         if (isStopRequested()) return;
-        Vector2d parkPose = new Vector2d(33.0409, 54.4091);
+        Vector2d parkPose = new Vector2d(52.0409, 62.4091);
         TrajectoryActionBuilder goToParkPose = drive.actionBuilder(drive.localizer.getPose())
                 .strafeToLinearHeading(parkPose, Math.toRadians(91.1721))
                 .waitSeconds(0.25);
