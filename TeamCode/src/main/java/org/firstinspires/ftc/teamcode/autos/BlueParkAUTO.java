@@ -41,14 +41,6 @@ public class BlueParkAUTO extends LinearOpMode {
         robot.setUpRobot(hardwareMap);
 
         robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(125.0, 0.0, 1.0, 15.0));
-        //Here is all the hardware mapping for the motors and servos defined above
-//        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
-//        intake = hardwareMap.get(DcMotorEx.class, "intake");
-//
-//        //CR Servos hardware mapping
-//        leftFeeder = hardwareMap.get(CRServo.class, "leftFeeder");
-//        rightFeeder = hardwareMap.get(CRServo.class, "rightFeeder");
-//        launcherFeeder = hardwareMap.get(CRServo.class, "launcherFeeder");
 
         waitForStart();
 
@@ -63,7 +55,8 @@ public class BlueParkAUTO extends LinearOpMode {
                 new SequentialAction(
                         goToParkPose.build()
                 )
-        );//The robot finishes intaking its first set of pollen here
+        );//The robot moves to park, signaling the end of AUTO
 
     }// End of the movement portion of the autonomous class
+
 }// End of the autonomous class

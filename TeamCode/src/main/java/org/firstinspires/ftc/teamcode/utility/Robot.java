@@ -118,13 +118,44 @@ public class Robot {
     }//End of the shooting function
 
     public static class intakeBall implements Action {
+        public boolean initialized = false;
+        public boolean startIntaking = false;
 
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            intake.setPower(1.0);
-            leftFeeder.setPower(1.0);
-            rightFeeder.setPower(1.0);
+            if (!initialized) {
+                initialized = true;
+                startIntaking = false;
+                intake.setPower(0.0);
+                leftFeeder.setPower(0.0);
+                rightFeeder.setPower(0.0);
+                runtime.reset();
+                runtime.startTime();
+            }
+            double pow = intake.getPower();
+            packet.put("Launcher Velocity", pow);
+            if (pow > 0.9) {
+                double tim = runtime.seconds();
+                packet.put("runtime", tim);
+                intake.setPower(1.0);
+                new SleepAction(0.5);
+                leftFeeder.setPower(1.0);
+                rightFeeder.setPower(1.0);
+                startIntaking = true;
+
+            } else if (!startIntaking) {
+                intake.setPower(1.0);
+                runtime.reset();
+                runtime.startTime();
+            }
+            if (runtime.seconds() > 5.0) {
+                intake.setPower(0.0);
+                leftFeeder.setPower(0.0);
+                rightFeeder.setPower(0.0);
+                return false;
+            }
             return true;
-        }//End of the intaking function
+        }
+    }//End of the intaking function
     }
-}
+

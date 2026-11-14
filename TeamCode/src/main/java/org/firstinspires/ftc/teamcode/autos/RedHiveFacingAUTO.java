@@ -43,14 +43,6 @@ public class RedHiveFacingAUTO extends LinearOpMode {
         robot.setUpRobot(hardwareMap);
 
         robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(125.0, 0.0, 1.0, 15.0));
-        //Here is all the hardware mapping for the motors and servos defined above
-//        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
-//        intake = hardwareMap.get(DcMotorEx.class, "intake");
-//
-//        //CR Servos hardware mapping
-//        leftFeeder = hardwareMap.get(CRServo.class, "leftFeeder");
-//        rightFeeder = hardwareMap.get(CRServo.class, "rightFeeder");
-//        launcherFeeder = hardwareMap.get(CRServo.class, "launcherFeeder");
 
         waitForStart();
 
@@ -89,7 +81,6 @@ public class RedHiveFacingAUTO extends LinearOpMode {
 //
 //        Vector2d intakePosOneClose = new Vector2d(-60.6812, 52.6039);
 //        TrajectoryActionBuilder goToIntakeOneClose = drive.actionBuilder(drive.localizer.getPose())
-//                //goToIntakeOne.endTrajectory().fresh()
 //                .strafeToLinearHeading(intakePosOneClose, Math.toRadians(90.3143))
 //                .waitSeconds(0.25);
 //
@@ -122,9 +113,9 @@ public class RedHiveFacingAUTO extends LinearOpMode {
 //                )
 //        ); //Robot finishes its second cycle of shooting pollen
 
-        Vector2d parkPose = new Vector2d(53.8957, 51.6199);
+        Vector2d parkPose = new Vector2d(52.0409, 62.4091);
         TrajectoryActionBuilder goToParkPose = drive.actionBuilder(drive.localizer.getPose())
-                .lineToXConstantHeading(Math.toRadians(126.286))
+                .strafeToLinearHeading(parkPose, Math.toRadians(91.1721))
                 .waitSeconds(0.25);
 
         Actions.runBlocking(
@@ -143,14 +134,6 @@ public class RedHiveFacingAUTO extends LinearOpMode {
 //                //.turnTo(129.0*Math.PI/180.0*flipAuto)
 //                .waitSeconds(0.05); // first time moving to the shooting position
 
-    /*
-        TrajectoryActionBuilder goToEnd = drive.actionBuilder(drive.localizer.getPose())
-                .strafeToLinearHeading(endingPosition, Math.toRadians(-177.7059))
-                .waitSeconds(0.01);
-
-        Actions.runBlocking(
-                goToEnd.build()
-        );
-     */
     }// End of the movement portion of the autonomous class
+
 }// End of the autonomous class

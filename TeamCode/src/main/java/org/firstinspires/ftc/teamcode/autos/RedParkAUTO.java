@@ -26,9 +26,6 @@ public class RedParkAUTO extends LinearOpMode {
     public void runOpMode() {
 
         while (!isStopRequested() && !opModeIsActive()) {
-            //add anything for during initialization
-            //telemetry.addData("Shots To Cycle", camera.findShotsToCycle());
-            //Here, we pick the alliance that we're on, and this automatically does the math to invert the coordinates per the alliance
             //The telemetry here tells the user which button to press for the designated alliance
             telemetry.update();
             telemetry.addLine("RED ALLIANCE");
@@ -42,15 +39,6 @@ public class RedParkAUTO extends LinearOpMode {
 
         robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(125.0, 0.0, 1.0, 15.0));
 
-        //Here is all the hardware mapping for the motors and servos defined above
-//        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
-//        intake = hardwareMap.get(DcMotorEx.class, "intake");
-//
-//        //CR Servos hardware mapping
-//        leftFeeder = hardwareMap.get(CRServo.class, "leftFeeder");
-//        rightFeeder = hardwareMap.get(CRServo.class, "rightFeeder");
-//        launcherFeeder = hardwareMap.get(CRServo.class, "launcherFeeder");
-
         waitForStart();
 
         if (isStopRequested()) return;
@@ -63,7 +51,8 @@ public class RedParkAUTO extends LinearOpMode {
                 new SequentialAction(
                         goToParkPose.build()
                 )
-        );//The robot finishes intaking its first set of pollen here
+        );//The robot moves to park, signaling the end of AUTO
 
     }// End of the movement portion of the autonomous class
+
 }// End of the autonomous class

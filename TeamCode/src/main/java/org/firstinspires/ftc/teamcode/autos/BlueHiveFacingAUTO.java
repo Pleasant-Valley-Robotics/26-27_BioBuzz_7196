@@ -43,14 +43,6 @@ public class BlueHiveFacingAUTO extends LinearOpMode {
         robot.setUpRobot(hardwareMap);
 
         robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(125.0, 0.0, 1.0, 15.0));
-        //Here is all the hardware mapping for the motors and servos defined above
-//        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
-//        intake = hardwareMap.get(DcMotorEx.class, "intake");
-//
-//        //CR Servos hardware mapping
-//        leftFeeder = hardwareMap.get(CRServo.class, "leftFeeder");
-//        rightFeeder = hardwareMap.get(CRServo.class, "rightFeeder");
-//        launcherFeeder = hardwareMap.get(CRServo.class, "launcherFeeder");
 
         waitForStart();
 
@@ -129,26 +121,8 @@ public class BlueHiveFacingAUTO extends LinearOpMode {
                 new SequentialAction(
                         goToParkPose.build()
                 )
-        );//The robot finishes intaking its first set of pollen here
+        );//The robot parks in the loading zone, signaling the end of AUTO
 
-//        TrajectoryActionBuilder goToIntakeOneCollect = drive.actionBuilder(drive.localizer.getPose())
-//                .lineToYConstantHeading(52.0 * flipAuto)
-//                .waitSeconds(0.1); // First set of artifacts intaked
-
-//        Vector2d shootPositionOne = new Vector2d(-30.6209, 21.5313 * flipAuto);
-//        TrajectoryActionBuilder goToShootOne = drive.actionBuilder(drive.localizer.getPose())
-//                .strafeToLinearHeading(shootPositionOne, 135.0 * (Math.PI/180.0 * flipAuto))
-//                //.turnTo(129.0*Math.PI/180.0*flipAuto)
-//                .waitSeconds(0.05); // first time moving to the shooting position
-
-    /*
-        TrajectoryActionBuilder goToEnd = drive.actionBuilder(drive.localizer.getPose())
-                .strafeToLinearHeading(endingPosition, Math.toRadians(-177.7059))
-                .waitSeconds(0.01);
-
-        Actions.runBlocking(
-                goToEnd.build()
-        );
-     */
     }// End of the movement portion of the autonomous class
+
 }// End of the autonomous class
