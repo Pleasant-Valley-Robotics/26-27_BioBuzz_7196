@@ -36,7 +36,7 @@ public class TurretMech {
     }
 // KD stuff
     public void setkD(double newKD) {
-        kP = newKD;
+        kD = newKD;
     }
 
     public double getkD() {
@@ -52,7 +52,7 @@ public class TurretMech {
         double deltaTime = timer.seconds();
         timer.reset();
 // "&& curID.id == 20" is only for the specific april tage 20, it can be removed
-        if (curID == null && curID.id == 20) {
+        if (curID == null) {
             turret.setPower(0);
             lastError = 0;
             return;
