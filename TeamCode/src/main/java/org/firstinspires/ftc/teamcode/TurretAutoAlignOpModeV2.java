@@ -52,26 +52,26 @@ public class TurretAutoAlignOpModeV2 extends OpMode {
             List<LLResultTypes.FiducialResult> aprilTags =
                     result.getFiducialResults();
 
-            LLResultTypes.FiducialResult id20 = null;
+            LLResultTypes.FiducialResult id32 = null;
 
-            // Look for AprilTag ID 20
+            // Look for AprilTag ID 32
             for (LLResultTypes.FiducialResult tag : aprilTags) {
-                if (tag.getFiducialId() == 20) {
-                    id20 = tag;
+                if (tag.getFiducialId() == 32) {
+                    id32 = tag;
                     break;
                 }
             }
 
-            if (id20 != null) {
+            if (id32 != null) {
 
-                turret.update(id20.getTargetXDegrees());
+                turret.update(id32.getTargetXDegrees());
 
-                telemetry.addData("curID", id20.getFiducialId());
-                telemetry.addData("tx", id20.getTargetXDegrees());
+                telemetry.addData("curID", id32.getFiducialId());
+                telemetry.addData("tx", id32.getTargetXDegrees());
 
             } else {
                 turret.update(null);
-                telemetry.addLine("No AprilTag 20 detected");
+                telemetry.addLine("No AprilTag 32 detected");
             }
 
         } else {
