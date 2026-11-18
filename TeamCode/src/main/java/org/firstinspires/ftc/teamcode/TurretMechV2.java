@@ -6,27 +6,38 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class TurretMechV2 {
 
     private DcMotorEx turret;
 
-    private double kP = 0.0001;
-    private double kD = 0.0000;
+    private double kP = 0.013;
+    private double kD = 0;
     private double goalX = 0;
     private double lastError = 0;
     private double angleTolerance = 0.2;
-    private final double MAX_POWER = 0.6;
+    private final double MAX_POWER = 0.8;
     private double power = 0;
     private final ElapsedTime timer = new ElapsedTime();
 
     private boolean firstDetection = true;
 
+    private Telemetry telemetry;
 
+/*
     public void init(HardwareMap hwMap) {
         turret = hwMap.get(DcMotorEx.class, "turret");
         turret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+
+*/
+    public void init(HardwareMap hwMap, Telemetry telemetry) {
+    this.telemetry = this.telemetry;
+
+    turret = hwMap.get(DcMotorEx.class, "turret");
+    turret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+}
 
     // KP stuff
     public void setkP(double newKP) {
@@ -81,6 +92,12 @@ public class TurretMechV2 {
         } else {
             power = Range.clip(pTerm + dTerm, -MAX_POWER, MAX_POWER);
         }
+
+        telemetry.addData("TX", curTX);
+        telemetry.addData("Error", error);
+        telemetry.addData("P Term", pTerm);
+        telemetry.addData("D Term", dTerm);
+        telemetry.addData("Motor Power", power);
 
         // safety encoder check OR magnetic limit switch check, OR other safeties.
 

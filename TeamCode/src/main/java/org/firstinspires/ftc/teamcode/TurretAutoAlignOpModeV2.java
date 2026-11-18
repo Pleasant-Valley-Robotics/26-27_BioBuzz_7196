@@ -27,7 +27,7 @@ public class TurretAutoAlignOpModeV2 extends OpMode {
 
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
 
-        turret.init(hardwareMap);
+        turret.init(hardwareMap, telemetry);
 
         telemetry.addLine("Initialized all mechanisms");
     }
