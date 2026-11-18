@@ -38,7 +38,7 @@ public class RedHiveFacingAUTO extends LinearOpMode {
         Storage.autoRan = Storage.AutoRan.FACING_HIVE;
 
         //Here the initial position is set for the AUTO
-        Pose2d initialPose = new Pose2d(-49.3885, 3.6707, Math.toRadians(-178.9458));
+        Pose2d initialPose = new Pose2d(63.0198, -13.6450, Math.toRadians(-0.4131));
         drive = new MecanumDrive(hardwareMap, initialPose);
         robot.setUpRobot(hardwareMap);
 
@@ -48,16 +48,15 @@ public class RedHiveFacingAUTO extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        Vector2d shootPositionStart = new Vector2d( -50.5409, 19.3727);
-        TrajectoryActionBuilder goToShootStart = drive.actionBuilder(drive.localizer.getPose())
-                .strafeToLinearHeading(shootPositionStart, Math.toRadians(154.86))
-                .waitSeconds(0.1);
+//        Vector2d shootPositionStart = new Vector2d( -50.5409, 19.3727);
+//       TrajectoryActionBuilder goToShootStart = drive.actionBuilder(drive.localizer.getPose())
+//                .strafeToLinearHeading(shootPositionStart, Math.toRadians(154.86))
+//                .waitSeconds(0.1);
 
         // -40.5093, 12.2717, -179.7521
         Actions.runBlocking(
                 new SequentialAction(
-                        goToShootStart.build(),
-                        new SleepAction(0.3),
+//                        goToShootStart.build(),//                       new SleepAction(0.3),
                         new Robot.shootBall(), // First ball is shot
                         new SleepAction(0.25),
                         new Robot.shootBall(), // Second ball is shot
@@ -74,48 +73,56 @@ public class RedHiveFacingAUTO extends LinearOpMode {
         //Here we first start off by shooting our 4 preloaded pollen from our kit-bot
 
 //        Intake position one is defined here using the x & y coordinates along with the heading of the robot (yaw)
-        Vector2d intakePosOne = new Vector2d(-49.9468, 41.1602);
+        Vector2d intakePosOne = new Vector2d(61.6597, -46.3874);
         TrajectoryActionBuilder goToIntakeOne = drive.actionBuilder(drive.localizer.getPose())
-                .strafeToLinearHeading(intakePosOne, Math.toRadians(90.0))
+                .strafeToLinearHeading(intakePosOne, Math.toRadians(-91.9845))
                 .waitSeconds(0.25);
 //
-//        Vector2d intakePosOneClose = new Vector2d(-60.6812, 52.6039);
+//        Vector2d intakePosOneClose = new Vector2d(61.194, -65.9051);
 //        TrajectoryActionBuilder goToIntakeOneClose = drive.actionBuilder(drive.localizer.getPose())
-//                .strafeToLinearHeading(intakePosOneClose, Math.toRadians(90.3143))
+//                .strafeToLinearHeading(intakePosOneClose, Math.toRadians(-90.555))
 //                .waitSeconds(0.25);
-//
+        TrajectoryActionBuilder goToIntakeOneClose = drive.actionBuilder(drive.localizer.getPose())
+                .lineToYLinearHeading(-65.9051, -90.555)
+                .waitSeconds(0.1); // First set of artifacts intaked
+
         //The robot moves from its current position to the target coordinates
             Actions.runBlocking(
                     new SequentialAction(
                             goToIntakeOne.build(),
-                            new SleepAction(0.1)
-//                            goToIntakeOneClose.build(),
-//                            new SleepAction(0.1),
-//                            new Robot.intakeBall(),
-//                            new SleepAction(3.0)
+                            new SleepAction(0.1),
+                            goToIntakeOneClose.build(),
+                            new SleepAction(0.1),
+                            new Robot.intakeBall(),
+                            new SleepAction(3.0)
                     )
             );//The robot finishes intaking its first set of pollen here
 
         //After intaking the pollen, the robot goes to the shoot position
 
-//        Actions.runBlocking(
-//                new SequentialAction(
-//                        goToShootStart.build(),
-//                        new SleepAction(0.1),
-//                        new Robot.shootBall(), // First ball is shot
-//                        new SleepAction(0.1),
-//                        new Robot.shootBall(), // Second ball is shot
-//                        new SleepAction(0.1),
-//                        new Robot.shootBall(), // Third ball is shot
-//                        new SleepAction(0.1),
-//                        new Robot.shootBall(), // Fourth ball is shot
-//                        new SleepAction(0.1)
-//                )
-//        ); //Robot finishes its second cycle of shooting pollen
+        Vector2d shootPosition = new Vector2d(60.5884, -31.1743);
+        TrajectoryActionBuilder goToShootPosition = drive.actionBuilder(drive.localizer.getPose())
+                .strafeToLinearHeading(shootPosition, Math.toRadians(-24.5802))
+                .waitSeconds(0.25);
 
-        Vector2d parkPose = new Vector2d(52.0409, 62.4091);
+        Actions.runBlocking(
+                new SequentialAction(
+                        goToShootPosition.build(),
+                        new SleepAction(0.1),
+                        new Robot.shootBall(), // First ball is shot
+                        new SleepAction(0.1),
+                        new Robot.shootBall(), // Second ball is shot
+                        new SleepAction(0.1),
+                        new Robot.shootBall(), // Third ball is shot
+                        new SleepAction(0.1),
+                        new Robot.shootBall(), // Fourth ball is shot
+                        new SleepAction(0.1)
+                )
+        ); //Robot finishes its second cycle of shooting pollen
+
+        Vector2d parkPose = new Vector2d(-31.9036, -59.148);
         TrajectoryActionBuilder goToParkPose = drive.actionBuilder(drive.localizer.getPose())
-                .strafeToLinearHeading(parkPose, Math.toRadians(91.1721))
+                .strafeToLinearHeading(parkPose, Math.toRadians(-60.923))
                 .waitSeconds(0.25);
 
         Actions.runBlocking(

@@ -34,6 +34,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.utility.limelight;
+
 import org.firstinspires.ftc.teamcode.utility.RoadRunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.utility.Robot;
 
@@ -57,7 +59,7 @@ public class CompTeleop extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     //This is the desired velocity that we want to use
-    double targetVelocity = 1200.0;
+    double targetVelocity = 1325.0;
     double maxFeederSpeed = 0.2;
 //    public MecanumDrive mecanumDrive;
 
