@@ -33,25 +33,26 @@ public class RedParkAUTO extends LinearOpMode {
         Storage.autoRan = Storage.AutoRan.AWAY_HIVE;
 
         //Here the initial position is set for the AUTO
-        Pose2d initialPose = new Pose2d(0.0, 66.0, Math.toRadians(90.0));
+        Pose2d initialPose = new Pose2d(0.0, 66.0, Math.toRadians(-90.0));
         drive = new MecanumDrive(hardwareMap, initialPose);
         robot.setUpRobot(hardwareMap);
 
-        robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(125.0, 0.0, 1.0, 15.0));
+        robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(125.0, 0.0, 2.5, 15.0));
 
         waitForStart();
 
         if (isStopRequested()) return;
-        Vector2d parkPose = new Vector2d(52.0409, 62.4091);
+
+        Vector2d parkPose = new Vector2d(-31.9036, -59.148);
         TrajectoryActionBuilder goToParkPose = drive.actionBuilder(drive.localizer.getPose())
-                .strafeToLinearHeading(parkPose, Math.toRadians(91.1721))
+                .strafeToLinearHeading(parkPose, Math.toRadians(-60.923))
                 .waitSeconds(0.25);
 
         Actions.runBlocking(
                 new SequentialAction(
                         goToParkPose.build()
                 )
-        );//The robot moves to park, signaling the end of AUTO
+        );//The robot ends AUTO here
 
     }// End of the movement portion of the autonomous class
 

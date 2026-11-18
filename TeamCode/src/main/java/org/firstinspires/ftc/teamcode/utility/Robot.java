@@ -99,7 +99,7 @@ public class Robot {
                 double tim = runtime.seconds();
                 packet.put("runtime", tim);
                 launcher.setVelocity(1325.0);
-                new SleepAction(0.5);
+                new SleepAction(1.0);
                 launcherFeeder.setPower(1.0);
                 startShooting = true;
 
