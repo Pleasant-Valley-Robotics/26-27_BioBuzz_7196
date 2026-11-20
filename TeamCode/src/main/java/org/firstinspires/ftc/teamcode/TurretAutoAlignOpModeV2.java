@@ -15,11 +15,7 @@ public class TurretAutoAlignOpModeV2 extends OpMode {
     private Limelight3A limelight;
     private TurretMechV2 turret = new TurretMechV2();
 
-    // -----------used to auto update P and D
 
-    double[] stepSizes = {0.1, 0.01, 0.001, 0.0001, 0.00001};
-    // Index to select the current step size from the array.
-    int stepIndex = 2;
 
 
     @Override
@@ -29,7 +25,9 @@ public class TurretAutoAlignOpModeV2 extends OpMode {
 
         turret.init(hardwareMap, telemetry);
 
+
         telemetry.addLine("Initialized all mechanisms");
+        telemetry.addLine("Testing");
     }
 
     @Override
@@ -38,6 +36,8 @@ public class TurretAutoAlignOpModeV2 extends OpMode {
         limelight.start();
         turret.resetTimer();
 
+        telemetry.addLine("Testing");
+        telemetry.update();
     }
 
     @Override
@@ -70,16 +70,16 @@ public class TurretAutoAlignOpModeV2 extends OpMode {
                 telemetry.addData("tx", id32.getTargetXDegrees());
 
             } else {
-                turret.update(null);
+                turret.update(null); // change 0.0 to null
                 telemetry.addLine("No AprilTag 32 detected");
             }
 
         } else {
-            turret.update(null);
+            turret.update(null); // change 0.0 to null
             telemetry.addLine("No valid Limelight data");
         }
 
+        telemetry.addLine("Testing");
         telemetry.update();
-
     }
 }

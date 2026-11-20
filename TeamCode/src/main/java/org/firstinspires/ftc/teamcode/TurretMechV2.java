@@ -12,8 +12,8 @@ public class TurretMechV2 {
 
     private DcMotorEx turret;
 
-    private double kP = 0.013;
-    private double kD = 0;
+    private double kP = 0.017;
+    private double kD = 0.0005;
     private double goalX = 0;
     private double lastError = 0;
     private double angleTolerance = 0.2;
@@ -33,7 +33,7 @@ public class TurretMechV2 {
 
 */
     public void init(HardwareMap hwMap, Telemetry telemetry) {
-    this.telemetry = this.telemetry;
+    this.telemetry = telemetry; // FIXED: assign the parameter to the field
 
     turret = hwMap.get(DcMotorEx.class, "turret");
     turret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
