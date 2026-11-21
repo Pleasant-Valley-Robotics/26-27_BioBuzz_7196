@@ -1,4 +1,4 @@
-
+// Imports
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.limelightvision.Limelight3A;
@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import java.util.List;
 
+// Used for teleop
 @TeleOp(name = "Turret Auto Align V2")
 public class TurretAutoAlignOpModeV2 extends OpMode {
 

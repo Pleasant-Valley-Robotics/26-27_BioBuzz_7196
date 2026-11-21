@@ -1,4 +1,4 @@
-
+// imports
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -12,12 +12,12 @@ public class TurretMechV2 {
 
     private DcMotorEx turret;
 
-    private double kP = 0.017;
-    private double kD = 0.0005;
-    private double goalX = 0;
+    private double kP = 0.017; // Proportional Gain
+    private double kD = 0.0005; //  Derivative Gain
+    private double goalX = 0; // Target Location
     private double lastError = 0;
-    private double angleTolerance = 0.2;
-    private final double MAX_POWER = 0.8;
+    private double angleTolerance = 0.2; // Angle Tolerance
+    private final double MAX_POWER = 0.8; // Power Limit
     private double power = 0;
     private final ElapsedTime timer = new ElapsedTime();
 
@@ -25,13 +25,6 @@ public class TurretMechV2 {
 
     private Telemetry telemetry;
 
-/*
-    public void init(HardwareMap hwMap) {
-        turret = hwMap.get(DcMotorEx.class, "turret");
-        turret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
-
-*/
     public void init(HardwareMap hwMap, Telemetry telemetry) {
     this.telemetry = telemetry; // FIXED: assign the parameter to the field
 
@@ -93,6 +86,7 @@ public class TurretMechV2 {
             power = Range.clip(pTerm + dTerm, -MAX_POWER, MAX_POWER);
         }
 
+        // Telemetry to be displayed
         telemetry.addData("TX", curTX);
         telemetry.addData("Error", error);
         telemetry.addData("P Term", pTerm);
@@ -100,6 +94,7 @@ public class TurretMechV2 {
         telemetry.addData("Motor Power", power);
 
         // safety encoder check OR magnetic limit switch check, OR other safeties.
+        // Limit Switches?
 
         turret.setPower(power);
         lastError = error;
