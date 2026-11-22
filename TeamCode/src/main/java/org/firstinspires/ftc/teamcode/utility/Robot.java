@@ -157,5 +157,159 @@ public class Robot {
             return true;
         }
     }//End of the intaking function
-    }
 
+    //The actions below are used by the TwoTip AUTOs. They let the robot do two things at once
+    //(for example drive while the launcher spins up) and shoot a whole load without stopping the launcher.
+
+    //Sets the launcher speed and finishes right away, so the robot can drive while the launcher
+    //gets up to speed. The launcher keeps spinning until stopLauncher is run.
+    public static class spinLauncher implements Action {
+        private final double velocity; //Launcher speed in encoder ticks per second
+
+        public spinLauncher(double velocity) {
+            this.velocity = velocity;
+        }
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            launcher.setVelocity(velocity);
+            return false;
+        }
+    }//End of the launcher spin up function
+
+    public static class stopLauncher implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            launcherFeeder.setPower(0.0);
+            launcher.setVelocity(0.0);
+            return false;
+        }
+    }//End of the launcher stop function
+
+    //Shoots a whole load of balls (a volley). The feeder only runs while the launcher is at speed,
+    //so it pauses by itself after every shot until the launcher has recovered.
+    //The launcher slows down for a moment every time a ball goes through it. The volley counts
+    //those dips, so it ends as soon as the last ball is out instead of running for a fixed time.
+    //The launcher is left spinning at the end so the next volley does not have to spin up again.
+    public static class shootVolley implements Action {
+        //These can be tuned on the real robot
+        public static double VELOCITY_TOLERANCE = 30.0; //How close counts as "at speed" (the hub reports in steps of 20)
+        public static double AT_SPEED_TIME = 0.1;       //Seconds the launcher must hold its speed before the first ball is fed
+        public static double SHOT_DIP = 60.0;           //When the launcher drops this far below its speed, one ball has been shot
+        public static double AFTER_SHOT_TIME = 0.1;     //Seconds the robot stays still after the last ball, so it is clear of the launcher
+        public static double MAX_FEED_PAUSE = 1.5;      //Most extra seconds spent waiting for the launcher to recover
+        public static double SPIN_UP_TIMEOUT = 3.0;     //Stop waiting after this long so the AUTO can never get stuck here
+
+        private final double velocity; //Launcher speed for this shooting spot, in encoder ticks per second
+        private final int balls;       //How many balls are in the robot
+        private final double feedTime; //Most seconds the feeder runs. This ends the volley if a ball was not counted
+                                       //or the robot holds fewer balls than expected.
+
+        private boolean initialized = false;
+        private boolean startShooting = false;
+        private boolean gaveUpWaiting = false;
+        private final ElapsedTime sinceStart = new ElapsedTime();
+        private final ElapsedTime atSpeed = new ElapsedTime();
+        private final ElapsedTime feedTimer = new ElapsedTime();
+        private final ElapsedTime loopTimer = new ElapsedTime();
+        private final ElapsedTime sinceLastShot = new ElapsedTime();
+        private double feederSeconds = 0.0;
+        private boolean feederOn = false;
+        private boolean readyForDip = true;
+        private int ballsShot = 0;
+
+        public shootVolley(double velocity, int balls, double feedTime) {
+            this.velocity = velocity;
+            this.balls = balls;
+            this.feedTime = feedTime;
+        }
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            if (!initialized) {
+                initialized = true;
+                launcherFeeder.setPower(0.0);
+                launcher.setVelocity(velocity);
+                sinceStart.reset();
+                atSpeed.reset();
+            }
+            double vel = launcher.getVelocity();
+            packet.put("Launcher Velocity", vel);
+            boolean atTargetSpeed = Math.abs(vel - velocity) <= VELOCITY_TOLERANCE;
+
+            if (!startShooting) {
+                //Wait until the launcher has reached its speed and stayed there for a moment
+                if (!atTargetSpeed) {
+                    atSpeed.reset();
+                }
+                if (atSpeed.seconds() >= AT_SPEED_TIME) {
+                    startShooting = true;
+                    feedTimer.reset();
+                    loopTimer.reset();
+                } else if (sinceStart.seconds() >= SPIN_UP_TIMEOUT) {
+                    //The launcher never settled (low battery?). Shoot anyway instead of waiting forever.
+                    startShooting = true;
+                    gaveUpWaiting = true;
+                    feedTimer.reset();
+                    loopTimer.reset();
+                }
+                return true;
+            }
+
+            //Count how long the feeder has really been running (pauses do not count)
+            if (feederOn) {
+                feederSeconds += loopTimer.seconds();
+            }
+            loopTimer.reset();
+            packet.put("runtime", feederSeconds);
+
+            //Count the balls: a dip in the launcher speed means a ball just went through
+            if (readyForDip && vel < velocity - SHOT_DIP) {
+                ballsShot++;
+                readyForDip = false;
+                sinceLastShot.reset();
+            } else if (!readyForDip && atTargetSpeed) {
+                readyForDip = true;
+            }
+            packet.put("Balls Shot", ballsShot);
+
+            if (ballsShot >= balls) {
+                //Every ball is out. Stay still for a moment, then the volley is done.
+                feederOn = false;
+                launcherFeeder.setPower(0.0);
+                return sinceLastShot.seconds() < AFTER_SHOT_TIME;
+            }
+
+            feederOn = atTargetSpeed || gaveUpWaiting;
+            launcherFeeder.setPower(feederOn ? 1.0 : 0.0);
+
+            if (feederSeconds > feedTime || feedTimer.seconds() > feedTime + MAX_FEED_PAUSE) {
+                launcherFeeder.setPower(0.0);
+                return false;
+            }
+            return true;
+        }
+    }//End of the volley shooting function
+
+    //Turns the intake and the two feeder wheels on and finishes right away, so the robot can
+    //already be intaking while it drives up to the balls
+    public static class intakeOn implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            intake.setPower(1.0);
+            leftFeeder.setPower(1.0);
+            rightFeeder.setPower(1.0);
+            return false;
+        }
+    }//End of the intake on function
+
+    public static class intakeOff implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            intake.setPower(0.0);
+            leftFeeder.setPower(0.0);
+            rightFeeder.setPower(0.0);
+            return false;
+        }
+    }//End of the intake off function
+    }
