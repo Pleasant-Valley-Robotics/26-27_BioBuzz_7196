@@ -49,6 +49,9 @@ public class FeatureBotDriveTest extends LinearOpMode {
 
         waitForStart();
 
+        // Reduced speed for initial testing
+        double driveScale = 0.5;
+        // ^^^^^change this later^^^^^^and remove drive scale
 
         // Joystick controls
         while (opModeIsActive()) {
@@ -77,9 +80,6 @@ public class FeatureBotDriveTest extends LinearOpMode {
                 backRightPower /= max;
             }
 
-            // Reduced speed for initial testing
-            double driveScale = 0.5;
-            // ^^^^^change this later^^^^^^and remove drive scale
 
             frontLeftDrive.setPower(frontLeftPower * driveScale);
             frontRightDrive.setPower(frontRightPower * driveScale);
@@ -91,6 +91,12 @@ public class FeatureBotDriveTest extends LinearOpMode {
             telemetry.addData("BL wheel Power", backLeftPower * driveScale);
             telemetry.addData("BR wheel Power", backRightPower * driveScale);
             telemetry.update();
+
+            // Stop all drivetrain motors when OpMode ends (ChatGPT recomendation)
+            frontLeftDrive.setPower(0);
+            frontRightDrive.setPower(0);
+            backLeftDrive.setPower(0);
+            backRightDrive.setPower(0);
         }
     }
 }
