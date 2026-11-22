@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.autos;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -17,8 +16,8 @@ import org.firstinspires.ftc.teamcode.utility.Robot;
 import org.firstinspires.ftc.teamcode.utility.Storage;
 
 @Config
-@Autonomous(name = "BlueParkAUTO", group = "Autonomous")
-public class BlueParkAUTO extends LinearOpMode {
+@Autonomous(name = "Blue Park", group = "Autonomous")
+public class BluePark extends LinearOpMode {
     Robot robot = new Robot();
     public static MecanumDrive drive;
 

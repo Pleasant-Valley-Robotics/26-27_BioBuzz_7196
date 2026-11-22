@@ -19,8 +19,11 @@ public class Robot {
     public static DcMotorEx frontRightDrive;
     public static DcMotorEx backLeftDrive;
     public static DcMotorEx backRightDrive;
+
     public static DcMotorEx launcher;
     public static DcMotorEx intake;
+    public static DcMotorEx transfer;
+    public static DcMotorEx turret;
 
     public static CRServo leftFeeder;
     public static CRServo rightFeeder;
@@ -40,6 +43,8 @@ public class Robot {
         //Endefector motors hardware mapping
         launcher = hardwareMap.get(DcMotorEx.class, "launcher");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
+        transfer = hardwareMap.get(DcMotorEx.class, "transfer");
+        turret = hardwareMap.get(DcMotorEx.class, "turret");
 
         //CR Servos hardware mapping
         leftFeeder = hardwareMap.get(CRServo.class, "leftFeeder");
@@ -67,6 +72,22 @@ public class Robot {
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        //Here are the encoders for the endeffectors
+        launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        transfer.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        launcher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        transfer.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        transfer.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 //        RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
 //                RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
