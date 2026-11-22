@@ -59,7 +59,7 @@ public class CompTeleop extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     //This is the desired velocity that we want to use
-    double targetVelocity = 1325.0;
+    double targetVelocity = 1250.0;
     double maxFeederSpeed = 0.2;
 //    public MecanumDrive mecanumDrive;
 

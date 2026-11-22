@@ -36,7 +36,7 @@ public class BlueParkAUTO extends LinearOpMode {
         Storage.autoRan = Storage.AutoRan.AWAY_HIVE;
 
         //Here the initial position is set for the AUTO
-        Pose2d initialPose = new Pose2d(0.431, 64.5164, Math.toRadians(89.0687));
+        Pose2d initialPose = new Pose2d(-2.0297, 66.9326, Math.toRadians( 91.7138));
         drive = new MecanumDrive(hardwareMap, initialPose);
         robot.setUpRobot(hardwareMap);
 
@@ -46,9 +46,9 @@ public class BlueParkAUTO extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        Vector2d parkPose = new Vector2d(-36.3666, 59.7969);
+        Vector2d parkPose = new Vector2d(34.8905, 63.315);
         TrajectoryActionBuilder goToParkPose = drive.actionBuilder(drive.localizer.getPose())
-                .strafeToLinearHeading(parkPose, Math.toRadians(86.5827))
+                .strafeToLinearHeading(parkPose, Math.toRadians(90.3652))
                 .waitSeconds(0.25);
 
         Actions.runBlocking(

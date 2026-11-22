@@ -44,6 +44,7 @@ public class RedHiveFacingAUTO extends LinearOpMode {
 
         robot.launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(125.0, 0.0, 2.5, 15.0));
 
+
         waitForStart();
 
         if (isStopRequested()) return;
@@ -56,13 +57,10 @@ public class RedHiveFacingAUTO extends LinearOpMode {
         Actions.runBlocking(
                 new SequentialAction(
                         new SleepAction(0.3),
-                        new Robot.shootBall(), // First ball is shot
-                        new SleepAction(0.75),
-                        new Robot.shootBall(), // Second ball is shot
-                        new SleepAction(0.75),
-                        new Robot.shootBall(), // Third ball is shot
-                        new SleepAction(0.75),
-                        new Robot.shootBall() // Fourth ball is shot
+                        new Robot.shootBall(), // Three balls are all shot at once
+                        new SleepAction(0.1),
+                        new Robot.shootBall(), // Three balls are all shot at once
+                        new SleepAction(0.75)
 //                        new SleepAction(0.1)
                 )
         ); //Robot finishes its first cycle of shooting pollen
@@ -74,7 +72,7 @@ public class RedHiveFacingAUTO extends LinearOpMode {
 //        Intake position one is defined here using the x & y coordinates along with the heading of the robot (yaw)
         Vector2d intakePosOne = new Vector2d(63.6597, -46.3874);
         TrajectoryActionBuilder goToIntakeOne = drive.actionBuilder(drive.localizer.getPose())
-                .strafeToLinearHeading(intakePosOne, Math.toRadians(-89.9845))
+                .strafeToLinearHeading(intakePosOne, Math.toRadians(-90.9845))
                 .waitSeconds(0.1);
 
         Actions.runBlocking(
@@ -83,10 +81,10 @@ public class RedHiveFacingAUTO extends LinearOpMode {
                         new SleepAction(0.1)
                 )
         );//The robot finishes intaking its first set of pollen here
-//
-        Vector2d intakePosOneClose = new Vector2d(63.194, -65.9051);
+
+        Vector2d intakePosOneClose = new Vector2d(63.194, -69.9051);
         TrajectoryActionBuilder goToIntakeOneClose = drive.actionBuilder(drive.localizer.getPose())
-                .strafeToLinearHeading(intakePosOneClose, Math.toRadians(-90.555))
+                .strafeToLinearHeading(intakePosOneClose, Math.toRadians(-92.555))
                 .waitSeconds(0.1);
 //        TrajectoryActionBuilder goToIntakeOneClose = drive.actionBuilder(drive.localizer.getPose())
 //                .lineToYLinearHeading(-65.9051, -90.555)
@@ -98,31 +96,16 @@ public class RedHiveFacingAUTO extends LinearOpMode {
                         goToIntakeOneClose.build(),
                         new SleepAction(0.1),
                         new Robot.intakeBall(),
-                        new SleepAction(3.0)
+                        new SleepAction(0.0)
                 )
         );//The robot finishes intaking its first set of pollen here
 
-        //After intaking the pollen, the robot goes to the shoot position
-
-        Vector2d shootPosition = new Vector2d(60.5884, -27.1743);
-        TrajectoryActionBuilder goToShootPosition = drive.actionBuilder(drive.localizer.getPose())
-                .strafeToLinearHeading(shootPosition, Math.toRadians(-15.5802))
-                .waitSeconds(0.25);
-
         Actions.runBlocking(
                 new SequentialAction(
-                        goToShootPosition.build(),
-                        new SleepAction(0.3),
-                        new Robot.shootBall(), // First ball is shot
-                        new SleepAction(0.75),
-                        new Robot.shootBall(), // Second ball is shot
-                        new SleepAction(0.75),
-                        new Robot.shootBall(), // Third ball is shot
-                        new SleepAction(0.75),
-                        new Robot.shootBall(), // Fourth ball is shot
+                        goToIntakeOne.build(),
                         new SleepAction(0.1)
                 )
-        ); //Robot finishes its second cycle of shooting pollen
+        );//The robot finishes intaking its first set of pollen here
 
         Vector2d parkPose = new Vector2d(-31.9036, -59.148);
         TrajectoryActionBuilder goToParkPose = drive.actionBuilder(drive.localizer.getPose())
