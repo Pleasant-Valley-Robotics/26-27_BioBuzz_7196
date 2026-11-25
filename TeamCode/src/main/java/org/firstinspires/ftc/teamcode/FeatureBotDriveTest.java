@@ -93,10 +93,14 @@ public class FeatureBotDriveTest extends LinearOpMode {
             telemetry.update();
 
             // Stop all drivetrain motors when OpMode ends (ChatGPT recomendation)
-            frontLeftDrive.setPower(0);
-            frontRightDrive.setPower(0);
-            backLeftDrive.setPower(0);
-            backRightDrive.setPower(0);
+            frontLeftDrive.setPower(0.0);
+            frontRightDrive.setPower(0.0);
+            backLeftDrive.setPower(0.0);
+            backRightDrive.setPower(0.0);
+
+            if (gamepad1.aWasPressed()){
+                backRightDrive.setPower(1.0);
+            }
         }
     }
 }
