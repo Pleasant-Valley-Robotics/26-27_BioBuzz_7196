@@ -95,7 +95,7 @@ public class TurretMechV2 {
 
         // safety encoder check OR magnetic limit switch check, OR other safeties.
         // Limit Switches?
-        
+
         turret.setPower(power);
         lastError = error;
         firstDetection = false;
